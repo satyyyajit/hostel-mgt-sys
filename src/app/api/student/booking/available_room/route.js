@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import connectDb from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
+// this is the route for getting all available rooms for a student to book
+// this route is protected and only accessible to authenticated students
+// route: /api/student/booking/available_room
 export const GET = async (req) => {
 
     try {
@@ -55,13 +58,9 @@ export const GET = async (req) => {
         }
 
         // Find all rooms
-        const rooms = await Room.find({});
-        // filter out rooms that are not vacant and from student gender male they have A1 hostel block
-        console.log("All rooms:", rooms);
-        const availableRooms = rooms.filter(room =>
-            room.isVacant &&
-            (student.gender === 'Male' ? room.hostelBlock === 'A1' : room.hostelBlock === 'B1')
-        );
+        const hostel = (student.gender === 'Female') ? 'B1' : 'A1';
+        const genderRooms = await Room.find({ isVacant: true, hostelBlock: hostel });
+        const availableRooms = genderRooms.filter(room => room.students.length < room.roomType);
 
         console.log("Available rooms:", availableRooms);
         return new NextResponse(

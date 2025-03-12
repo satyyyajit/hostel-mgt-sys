@@ -8,7 +8,8 @@ import connectDb from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 
-
+// this is the route for booking a room /api/student/booking
+// this route is protected and only accessible to authenticated students
 export const POST = async (req) => {
     try {
         await connectDb();
@@ -63,6 +64,7 @@ export const POST = async (req) => {
         const body = await req.json();
         const { preferredRoom, bedType, messType } = body;
 
+
         // Check if student has already booked a room
         if (student.booking) {
             console.log("Student has already booked a room");
@@ -73,12 +75,27 @@ export const POST = async (req) => {
         }
 
         // Check if room exists
-        const room = await Room.findOne({ roomNumber: preferredRoom });
+        const hostelBlock = (student.gender.toLowerCase() === 'female') ? 'B1' : 'A1';
+
+        const room = await Room.findOne({ roomNumber: preferredRoom, hostelBlock });
+        console.log(room);
         if (!room) {
             console.log("Room not found");
             return new NextResponse(
                 JSON.stringify({ success: false, message: 'Room not found.' }),
                 { status: 404 }
+            );
+        }
+
+        // Check if the selected room matches the student's gender and hostel block
+        console.log("Hostel block:", hostelBlock);
+        console.log("Room hostel block:", room.hostelBlock);
+
+        if (room.hostelBlock !== hostelBlock) {
+            console.log("Selected room does not match the student's gender and hostel block");
+            return new NextResponse(
+                JSON.stringify({ success: false, message: 'Selected room does not match your gender\'s hostel block.' }),
+                { status: 400 }
             );
         }
 
@@ -145,9 +162,9 @@ export const POST = async (req) => {
         await Student.findByIdAndUpdate(student._id, { $push: { fees: fee._id } });
 
         await Student.findOneAndUpdate({ studentId }, { $set: { room: room._id } }, { new: true });
-        await Student.findOneAndUpdate({ studentId }, { $set: { mess: booking.messType }},{ new : true});
+        await Student.findOneAndUpdate({ studentId }, { $set: { mess: booking.messType } }, { new: true });
         const block = await HostelBlock.findOne({ blockName: room.hostelBlock });
-        await Student.findOneAndUpdate({ studentId }, { $set: { block: block._id } },{ new : true});
+        await Student.findOneAndUpdate({ studentId }, { $set: { block: block._id } }, { new: true });
 
         return new NextResponse(
             JSON.stringify({ success: true, message: 'Booking successful, Complete the transaction to confirm.' }),
@@ -218,7 +235,7 @@ export const GET = async (req) => {
                 JSON.stringify({ success: true, message: 'No booking found.', booking: null }),
                 { status: 200 }
             );
-            
+
         }
 
         // Find booking

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+
+// this is room schema
 const roomSchema = new mongoose.Schema({
     roomNumber: {
         type: String,

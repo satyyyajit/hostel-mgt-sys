@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 
 
 
+// this is booking
+
+delete mongoose.connection.models['Booking'];
 const bookingSchema = new mongoose.Schema({
     room: {
         type: String,
