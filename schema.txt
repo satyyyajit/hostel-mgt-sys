@@ -1,0 +1,121 @@
+Student {
+    name: String,
+    registrationNumber: String,
+    year: String,
+    dateOfBirth : Date,
+    email: String,
+    password: String,
+    phoneNumber: String,
+    parentPhoneNumber: String,
+    gender: Male or Female
+    homeTown: String,
+    room: String ,
+    block: String,
+    roomtype: ObjectId of Room,
+    isInGym: Boolean
+    
+    below will be functions
+    messtype: [String], // e.g., Veg, Non-Veg
+    pending_fees: [ObjectId of FeePayment],
+    complaints: [ObjectId of Complaint],
+    attendance: [ObjectId of Attendance],
+    notices: [ObjectId of Notice],
+    leave_applications: [ObjectId of LeaveApplication],
+    feedback: [ObjectId of Feedback],
+    role: Default 'student'
+    createdAt: Date,
+    updatedAt: Date,
+    allocation_request: ObjectID of allocation_request
+}
+
+Warden {
+    name: String,
+    empid:String,
+    email: String,
+    address: String,
+    phoneNumber: String,
+    dateOfBirth: Date,
+    yearJoined: Number,
+    role: ['Warden', 'Admin']
+    password: String,
+    block: String,
+    createdAt: Date,
+    updatedAt: Date
+}
+
+Room {
+    _id:
+    roomNumber: String,
+    block: String,
+    type: String, // e.g., Single, Double, Triple
+    occupied: Number,
+    maxOccupancy: Number,
+    students: [ObjectId of Student]
+}
+
+Gym { // Name of the gym
+    _id:
+    room: String, // Location of the gym
+    students: [ObjectId]
+    maxCapacity: Number, // Maximum number of people allowed (e.g., 20)
+    currentOccupancy: Number, // Current number of people using the gym
+    equipment: [String], // List of available equipment
+    openingHours: String, // Opening hours of the gym
+    closingHours: String, // Closing hours of the gym
+    createdAt: Date, // Timestamp for when the record was created
+    updatedAt: Date // Timestamp for when the record was last updated
+}
+
+FeePayment {
+    _Id: ObjectId of the Fee Payment created
+    student: ObjectId of Student, // Reference to the student making the payment
+    type: String, // Type of fee (e.g., hostelFee, gymFee, fine)
+    amount: Number, // Amount of the fee
+    paymentDate: Date, // Date of the payment
+    status: String, // Status of the payment (e.g., Pending, Paid)
+    dueDate: Date, // Due date for the payment
+    createdAt: Date, // Timestamp for when the record was created
+    updatedAt: Date // Timestamp for when the record was last updated
+}
+
+Complaint {
+    _id:
+    student: ObjectId of Student,
+    complaintType: ['Room', 'Mess', 'GymGames'],
+    description: String,
+    status: String, // e.g., Pending, Resolved
+    createdAt: Date
+}
+
+Notice {
+    _id:
+    title: String,
+    description: String,
+    createdAt: Date
+}
+
+LeaveApplication {
+    _id
+    student: ObjectId of Student,
+    startDate: Date,
+    endDate: Date,
+    reason: String
+    status: String, // e.g., Pending, Approved
+    createdAt: Date
+}
+
+Feedback {
+    id
+    student: ObjectId of Student ,
+    feedback_despription: String,
+    feedbackType: String, // e.g., Mess, Gym, Hostel
+    _id:
+    createdAt: Date
+}
+
+Attendance {
+    id
+    student: ObjectId of Student,
+    date: Date,
+    status: String // e.g., Present, Absent
+}

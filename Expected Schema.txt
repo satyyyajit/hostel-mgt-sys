@@ -1,0 +1,160 @@
+Expected Schema
+
+Student { done
+    name: String,
+    registrationNumber: String,
+    year: String,
+    dateOfBirth: Date,
+    email: String,
+    password: String,
+    phoneNumber: String,
+    parentName: String,
+    parentPhoneNumber: String,
+    gender: String, // "Male" or "Female"
+    homeTown: String,
+    room: String,
+    block: String,
+    roomtype: ObjectId, // Reference to Room schema
+    isInGym: if he has that gym slot ID with it,
+
+    // Attributes for ER Diagram (Foreign Keys) [Not need to mention in Class DIAGRAM]
+    messType: String, // e.g., "Veg", "Non-Veg"
+    Payments: ObjectId, // Foreign Key to Payments schema
+    complaints: ObjectId, // Foreign Key to Complaints schema
+    attendance: ObjectId, // Foreign Key to Attendance schema
+    notices: ObjectId, // Foreign Key to Notices schema (for showNotice function) done
+    leave_applications: ObjectId, // Foreign Key to Leave Applications schema
+    feedback: ObjectId, // Foreign Key to Feedbacks schema
+    role: "Student"
+}
+
+
+
+Functions for the Student Class:
+checkMenu(): Allows the student to view the current mess menu based on their messType (Veg/Non-Veg).
+
+showNotices(): Displays notices posted by the warden or administration (linked to the notices attribute).
+
+submitComplaint(): Allows the student to submit a complaint (linked to the complaints attribute).
+
+applyForLeave(): Enables the student to submit a leave application (linked to the leave_applications attribute).
+
+submitFeedback(): Allows the student to provide feedback about hostel facilities (linked to the feedback attribute).
+
+viewAttendance(): Displays the student's attendance record (linked to the attendance attribute).
+
+viewPayments(): Shows the student's payment history (linked to the Payments attribute).
+
+requestRoomAllocation(): Allows the student to request a room change or allocation (linked to the allocationRequest attribute).
+
+updateProfile(): Enables the student to update their personal information (e.g., phone number, email, etc.).
+
+viewGym(): Displays whether the student is currently using the gym (linked to the isInGym attribute).
+
+
+
+Warden { done
+    name: String,
+    empid:String,
+    email: String,
+    address: String,
+    phoneNumber: String,
+    dateOfBirth: Date,
+    yearJoined: Number,
+    role: 'Admin'
+    password: String,
+    block: refers to hostel block id
+}
+
+functions for the warden : addMenu(), allot_requests(), showComplaints(), showFeedbacks(), generateFines(), gymData(), showLeaveApplications(), showTransactions(), postNotices(), showProfile(), showStudentDatabase()
+
+
+
+Room { done
+    id : primary key
+    roomNumber
+    block: String,
+    type: String, // e.g., 2,4
+    occupied: Number,
+    maxOccupancy: Number,
+    HostelBlock: fk of the hostel block id
+
+    students: Refers to FK of Students who have this room (multivalued so no need mention)
+}
+
+HostelBlock { done
+    id:
+    blockName:
+}
+
+
+Complaint { done
+    _id:
+    student: ObjectId of Student,
+    complaintType: ['Room', 'Mess', 'GymGames'],
+    description: String,
+    status: String, // e.g., Pending, Resolved
+}
+
+Feedback { done
+    id
+    student: ObjectId of Student ,
+    feedback_despription: String,
+    feedbackType: String, // e.g., Mess, Gym, Hostel
+}
+
+Notice { done
+    _id:
+    title: String,
+    description: String,
+}
+
+Leave { done
+    _id
+    student: refer of ID Student,
+    startDate: Date,
+    startTime: Time
+    endTime: Time
+    endDate: Date,
+    reason: String
+    place: String
+    phoneNumber:
+    status: String,
+}
+
+Attendance { done
+    student: ObjectId of Student,
+    date: Date,
+    status: String [present, absent, leave]
+}
+
+Fee { done
+    id,
+    student: ObjectId of Student, // Reference to the student id
+    type: String, (e.g., hostelFee, gymFee, fine)
+    amount: Number, // Amount of the fee
+    paymentDate: Date, 
+    status: String, (e.g., Pending, Paid)
+    dueDate: Date, 
+}
+
+Gym { done
+    id,
+    room, //Location
+    occupiedNumber: length(slot)
+    maxCapacity:20
+    slot: links to studentId
+}
+
+Menu {
+    month: String
+    day: String
+    menu: String
+}
+
+Booking {
+    room:
+    studentId:
+    fee_status:'pending'
+    isOccupied:False
+}
