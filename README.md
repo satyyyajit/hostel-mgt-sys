@@ -1,17 +1,21 @@
 # 🏠 Hostel Management System
 
-Welcome to the **Hostel Management System** – a streamlined solution for managing hostel operations efficiently! 🚀  
-This project is made for learning and demonstration of the software engineering lab course.
-This is a collective effort of our 3-membered team where I was the Full-Stack Student Developer 
+Welcome to the **Hostel Management System** – a streamlined solution for efficiently managing hostel operations! 🚀
+
+This project was developed as part of our **Software Engineering Lab Course** and serves as a learning experience and demonstration. Our **3-member team** collaboratively built this system, with me as the **Full-Stack Developer**.
+
+---
 
 ## 📌 Features
 
-✅ **Student Management** - Register, update, and manage student details easily.  
-✅ **Room Allocation** - Automated room assignment based on availability.  
-✅ **Attendance Tracking** - Monitor student attendance with a simple interface.  
-✅ **Fee Management** - Track hostel fees and generate invoices seamlessly.  
-✅ **Complaint Handling** - Allow students to raise complaints and track resolutions.  
-✅ **Admin Dashboard** - An intuitive dashboard for hostel administrators.  
+✅ **Student Management** - Register, update, and manage student records seamlessly.  
+✅ **Room Allocation** - Automated room assignment based on availability and preferences.  
+✅ **Attendance Tracking** - Monitor student attendance effortlessly.  
+✅ **Fee Management** - Track hostel fees and generate invoices efficiently.  
+✅ **Complaint Handling** - Enable students to raise complaints and track resolutions.  
+✅ **Admin Dashboard** - Intuitive dashboard for administrators to manage the hostel.  
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -22,47 +26,66 @@ This is a collective effort of our 3-membered team where I was the Full-Stack St
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
+---
 
 ## 🚀 Installation & Setup
 
-### Clone the repository
+### 1️⃣ Clone the repository
 ```bash
- git clone https://github.com/satyyyajit/hostel-mgt-sys.git
- cd hostel-mgt-sys
+git clone https://github.com/satyyyajit/hostel-mgt-sys.git
+cd hostel-mgt-sys
 ```
 
-### Install dependencies
+### 2️⃣ Install dependencies
 ```bash
 npm install
 ```
 
-### Set up environment variables
-Create a `.env` file in the root directory and configure your database, authentication keys, and other settings.
+### 3️⃣ Set up environment variables
+Create a `.env` file in the root directory and configure the following:
+- Database connection
+- Authentication keys
+- Other necessary settings
 
-### Setup first users
-use /signup/student
-use /signup/admin
+### 4️⃣ Setup initial users
+- **Student Registration**: `POST /signup/student`
+- **Admin Registration**: `POST /signup/admin`
 
-### Run the development server
+### 5️⃣ Run the development server
 ```bash
 npm start
 ```
 
+---
+
 ## 📷 UI Sneak Peek
 ![Dashboard Preview]()
 
-## 📌 Upcoming Features
-- 📜 Digital Notices for announcements.  
-- 🔔 Push Notifications for important alerts.  
-- 📊 Analytics for student activity and hostel occupancy.  
-- 📅 Booking System for hostel accommodations.  
+---
 
-## 🤝 Contributing
-We welcome contributions! Feel free to fork this repo, create a new branch, and submit a pull request.
+## 🔥 Upcoming Features
 
-## 📜 License
-This project is open-source under the [MIT License](LICENSE).
+🔹 **📜 Digital Notices** - Easily publish announcements for students.  
+🔹 **🔔 Push Notifications** - Keep students updated with real-time alerts.  
+🔹 **📊 Analytics Dashboard** - Track student activity and hostel occupancy trends.  
+🔹 **📅 Booking System** - Simplified hostel room booking for students.  
 
 ---
-🚀 **Developed with Curiosity by Satyajit, Yamini, Harshitha** 🎨
+
+## 🤝 Contributing
+
+We welcome contributions! To contribute:
+1. **Fork** this repository.
+2. **Create a new branch** for your changes.
+3. **Make necessary modifications and commit them.**
+4. **Submit a pull request (PR) for review.**
+
+---
+
+## 📜 License
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+🚀 **Developed with Passion & Curiosity by** _Satyajit, Yamini, Harshitha_ 🎨
 
