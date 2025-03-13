@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, User, FileText, CheckCircle, XCircle, Download, Loader2 } from 'lucide-react';
 import axios from 'axios';
-import {toast,  Toaster} from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 
 
 const LeaveForm = () => {
@@ -116,6 +116,8 @@ const LeaveForm = () => {
         }
     };
 
+
+
     const getStatusBadge = (status) => {
         switch (status) {
             case 'approved':
@@ -136,6 +138,27 @@ const LeaveForm = () => {
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    };
+
+    const handleDownload = async (leaveId) => {
+        try {
+            const response = await fetch(`/api/student/leave/${leaveId}`);
+            if (!response.ok) throw new Error('Failed to download leave request');
+
+            // Create a blob from the response and trigger a download
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `leave_request_${leaveId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading leave request:', error);
+            toast.error('Failed to download leave request');
+        }
     };
 
     return (
@@ -339,7 +362,10 @@ const LeaveForm = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(leave.status)}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                 {leave.status === 'approved' && (
-                                                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    <button
+                                                        onClick={() => handleDownload(leave._id)}
+                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                                    >
                                                         <Download className="w-4 h-4 mr-1" /> Download
                                                     </button>
                                                 )}

@@ -95,7 +95,7 @@ function App() {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {filteredMembers.map((member) => (
-                                        <tr key={member.id} className="hover:bg-gray-50">
+                                        <tr key={member._id} className="hover:bg-gray-50">
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{member._id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.studentId}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">

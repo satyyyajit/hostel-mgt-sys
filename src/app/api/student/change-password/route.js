@@ -2,6 +2,7 @@ import Student from "@/models/UserModels/Student";
 import jwt from "jsonwebtoken";
 import connectDb from "@/lib/db";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
 export const POST = async (req) => {
     try {
@@ -55,40 +56,51 @@ export const POST = async (req) => {
         }
 
         // Parse request body
-        const body = await req.json();
-        const { oldPassword, newPassword } = body;
+        const { currentPassword, newPassword, confirmPassword } = await req.json();
 
-        // Validate request body
-        if (!oldPassword || !newPassword) {
-            return new NextResponse(
-                JSON.stringify({ success: false, message: 'Old password and new password are required.' }),
+        // Validate input fields
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            console.log('All fields are required',);
+            return NextResponse.json(
+                { success: false, message: 'All fields are required.' },
                 { status: 400 }
             );
         }
 
-        // // Validate new password length and complexity
-        // if (newPassword.length < 8) {
-        //     return new NextResponse(
-        //         JSON.stringify({ success: false, message: 'New password must be at least 8 characters long.' }),
-        //         { status: 400 }
-        //     );
-        // }
-
-        // Check if old password matches
-        const isPasswordValid = await student.comparePassword(oldPassword);
-        if (!isPasswordValid) {
-            return new NextResponse(
-                JSON.stringify({ success: false, message: 'Old password is incorrect.' }),
-                { status: 401 }
+        if (newPassword !== confirmPassword) {
+            console.log('Password not same',);
+            return NextResponse.json(
+                { success: false, message: 'New password and confirm password do not match.' },
+                { status: 400 }
             );
         }
 
-        // Update password
-        student.password = newPassword; // Ensure the Student model hashes the password before saving
-        await student.save();
+        if (currentPassword === newPassword) {
+            console.log('Password same',);
+            return NextResponse.json(
+                { success: false, message: 'New password cannot be the same as the old password.' },
+                { status: 400 }
+            );
+        }
 
-        return new NextResponse(
-            JSON.stringify({ success: true, message: 'Password updated successfully.' }),
+        const isMatch = await bcrypt.compare(currentPassword, student.password);
+        console.log(isMatch);
+        if (!isMatch) {
+            return NextResponse.json(
+                { success: false, message: 'Current password is incorrect.' },
+                { status: 400 }
+            );
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update admin password
+        await Student.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+
+        return NextResponse.json(
+            { success: true, message: 'Password updated successfully.' },
             { status: 200 }
         );
     } catch (error) {

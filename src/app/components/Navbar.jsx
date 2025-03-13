@@ -2,22 +2,27 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { logout } from '@/utils/logout';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar =  () => {
     const router = useRouter();
     const LogOut = async () => {
         try {
-            await logout();
-        router.push('/');
+            await axios.post('/api/logout');
+            toast.success('Logged out successfully!');
+            router.push('/');
         } catch (error) {
+            toast.error('An error occurred!');
             console.error('Logout error:', error);
         }
     }
         
   return (
     <nav className='z-50 w-full bg-white '>
+        <ToastContainer />
         <div className='md:px-4 px-2 py-3 mx-auto flex justify-between items-center '>
             <h1 className='text-xl font-semibold text-gray-800'>HSM</h1>
             <div className='flex items-center gap-4'>

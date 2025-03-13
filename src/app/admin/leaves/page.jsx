@@ -74,6 +74,7 @@ function LeaveForm() {
             const response = await axios.get('/api/admin/leaves');
             setPreviousLeaves(response.data.leaves);
         } catch (error) {
+            console.error('Error fetching previous leaves:', error);
             toast.error('An error occurred while fetching leave requests');
         }
     };
@@ -116,6 +117,7 @@ function LeaveForm() {
                 toast.error(response.data.message);
             }
         } catch (error) {
+            console.error('Error submitting leave application:', error);
             toast.error('An error occurred while submitting the leave application');
         } finally {
             setIsLoading(false);

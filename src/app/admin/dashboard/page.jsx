@@ -39,7 +39,7 @@ const QuickActions = () => {
             title: 'Leave',
             icon: LucideLogOut
             ,
-            href: '/admin/leave_applications'
+            href: '/admin/leaves    '
         }
     ]
 

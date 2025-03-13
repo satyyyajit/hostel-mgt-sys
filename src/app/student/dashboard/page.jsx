@@ -43,14 +43,79 @@ const QuickActions = () => {
 
 
 const Notices = () => {
+    const [notices, setNotices] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const formatDate = (date) => {
+        if (!date) return 'No date available'; // Handle null, undefined, or empty string
+    
+        try {
+            const d = new Date(date);
+    
+            // Check if the date is invalid
+            if (isNaN(d.getTime())) {
+                return 'Invalid date';
+            }
+    
+            // Format the date
+            return d;
+        } catch (err) {
+            return 'Invalid date'; // Fallback for unexpected errors
+        }
+    };
+
+    useEffect(() => {
+        const fetchNotices = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                const response = await axios.get('/api/notices');
+                console.log(response.data);
+                setNotices(response.data.notices[0]);
+            } catch (err) {
+                console.error('Error fetching notices:', err);
+                setError('Failed to load notices');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchNotices();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="bg-blue-50 rounded-2xl p-6 border border-gray-300 w-full flex justify-center">
+                <p className="text-gray-600">Loading notices...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="bg-red-50 rounded-2xl p-6 border border-red-300 w-full">
+                <p className="text-red-600">{error}</p>
+            </div>
+        );
+    }
+
+    if (!notices) {
+        return (
+            <div className="bg-blue-50 rounded-2xl p-6 border border-gray-300 w-full">
+                <p className="text-gray-600">No notices available</p>
+            </div>
+        );
+    }
+
     return (
-        <div className='bg-blue-50 rounded-2xl p-6 border border-gray-300 w-full flex flex-col hover:scale-101 transition-transform duration-300'>
-            <h1 className='text-lg md:text-xl font-bold text-gray-900'>
-                Important Notice
+        <div className="bg-blue-50 rounded-2xl p-6 border border-gray-300 w-full flex flex-col hover:scale-[1.01] transition-transform duration-300">
+            <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                {notices.title || 'Untitled Notice'}
             </h1>
-            <p className='text-gray-600 text-md md:text-lg font-medium mt-1'>
-                Description of the notice goes here.
+            <p className="text-gray-600 text-md md:text-lg font-medium mt-1">
+                {notices.description || 'No description available'}
             </p>
+           
         </div>
     );
 };

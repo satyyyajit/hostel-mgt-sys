@@ -1,12 +1,12 @@
 import Menu from "@/models/Functions/Menu";
 import jwt from "jsonwebtoken";
 import connectDb from "@/lib/db";
+import Student from "@/models/UserModels/Student";
 import { NextRequest, NextResponse } from "next/server";
 
 
 export const GET = async (req) => {
-
-    try{
+    try {
         await connectDb();
         const cookieHeader = req.headers.get('cookie');
         if (!cookieHeader) {
@@ -42,34 +42,31 @@ export const GET = async (req) => {
         }
 
         const studentId = decoded.studentId;
-
-        // Connect to database
-        await connectDb();
-
-        // Find student
         const student = await Student.findOne({ studentId });
         if (!student) {
-            console.log("Student not found");
             return new NextResponse(
                 JSON.stringify({ success: false, message: 'Student not found.' }),
                 { status: 404 }
             );
         }
 
-        // Find student's mess menu
-        const menu = await Menu.find({})
+        const menu = await Menu.find({});
+        if (!menu || menu.length === 0) {
+            return new NextResponse(
+                JSON.stringify({ success: false, message: 'No menu data found.' }),
+                { status: 404 }
+            );
+        }
 
         return new NextResponse(
             JSON.stringify({ success: true, menu }),
             { status: 200 }
         );
-    }
-    catch(error){
+    } catch (error) {
         console.error('Error:', error);
         return new NextResponse(
             JSON.stringify({ success: false, message: 'An error occurred.' }),
             { status: 500 }
         );
     }
-
-}
+};

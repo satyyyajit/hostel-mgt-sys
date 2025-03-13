@@ -5,7 +5,7 @@ import Booking from "@/models/Functions/Booking";
 import Block from "@/models/Functions/HostelBlock";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-
+import Notice from "@/models/UtilityModels/Notice";
 export async function GET(req) {
     try {
         await connectDb();
@@ -58,10 +58,12 @@ export async function GET(req) {
             mess = student.mess;
         }
 
+        const notices = await Notice.find({}).sort({ createdAt: -1 });
+        
 
         // Return the student details
         return new NextResponse(
-            JSON.stringify({ success: true, student, blockName, roomNumber, mess }),
+            JSON.stringify({ success: true, student, blockName, roomNumber, mess, notices: notices || [] }),
             { status: 200 }
         );
 
